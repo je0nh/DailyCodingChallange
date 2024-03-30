@@ -1,10 +1,7 @@
 # 약수 개수 구하기
-import math
-
 def divisor_count(n):
     count = 0
-    sq_num = int(math.sqrt(n))
-    for i in range(1, sq_num + 1):
+    for i in range(1, int(n**(1/2)) + 1):
         if n % i == 0:
             count += 1
             if i != n // i:
