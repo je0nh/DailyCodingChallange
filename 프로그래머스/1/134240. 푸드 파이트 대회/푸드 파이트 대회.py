@@ -17,4 +17,4 @@ def solution(food):
         while count < a:
             answer += str(i)
             count += 1
-    return answer + '0' + ''.join(list(reversed(answer)))
+    return answer + '0' + answer[::-1]
