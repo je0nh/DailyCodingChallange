@@ -13,18 +13,22 @@ def solution(keymap, targets):
     특정 문자열 작성할 때 -> 키를 최소 몇번 눌러야 작성할수 있는지?
     """
     answer = []
-    
+    # keymap = ["ABC"]
+    # target = ["DA"]
     for i in range(len(targets)):
         total_press = 0
         for char in targets[i]:
+            # char == 'D'
+            # len(keymap) == 100 -> 최대 keymap[99] 까지 검색 가능
             key_press = 100
             for j in range(len(keymap)):
-                if char in keymap[j] and keymap[j].index(str(char)) < key_press:
+                # 해당하는 값이 없기 때문에 key_press == 100
+                if char in keymap[j] and keymap[j].index(char) < key_press:
                     key_press = keymap[j].index(char) + 1
-                    print(char, key_press, total_press)
+            # key_press == 100 라는 말은 검색되는 값이 없다는 뜻
             if key_press == 100:
                 total_press = -1
-                break
+                break # 반복문 중단 후 32번째 줄로 이동
             else:
                 total_press += key_press
         answer.append(total_press)
