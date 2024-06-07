@@ -12,5 +12,5 @@ def solution(board, h, w):
     for loc in location:
         if 0 <= loc[0] < len(board) and 0 <= loc[1] < len(board[0]):
             if sel_color == board[loc[0]][loc[1]]:
-                cnt += 1   
+                cnt += 1
     return cnt
