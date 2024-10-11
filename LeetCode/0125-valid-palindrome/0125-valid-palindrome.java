@@ -3,18 +3,38 @@ import java.util.regex.*;
 
 class Solution {
     public boolean isPalindrome(String s) {
-        s = s.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
+        s = s.toLowerCase();
         
-        int lastIndex = s.length() - 1;
-        if (lastIndex <= 0) {
-            return true;
-        }
-        for (int i = 0; i <= (s.length() - 1) / 2; i++) {
-            if (s.charAt(i) != s.charAt(lastIndex)) {
+        int frontIdx = 0;
+        int rearIdx = s.length() - 1;
+        while (frontIdx < rearIdx) {
+            char front = s.charAt(frontIdx);
+            char rear = s.charAt(rearIdx);
+
+            if (!checkChar(front)) {
+                frontIdx++;
+                continue;
+            }
+
+            if (!checkChar(rear)) {
+                rearIdx--;
+                continue;
+            }
+
+            if (front != rear) {
                 return false;
             }
-            lastIndex--;
+
+            frontIdx++;
+            rearIdx--;
         }
         return true;
+    }
+
+    private boolean checkChar(char c) {
+        if (c >= 'a' && c <= 'z' || c >= '0' && c <= '9') {
+            return true;
+        }
+        return false;
     }
 }
