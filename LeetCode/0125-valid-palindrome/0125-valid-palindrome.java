@@ -1,15 +1,17 @@
 import java.util.*;
+import java.util.regex.*;
 
 class Solution {
     public boolean isPalindrome(String s) {
-        StringTokenizer st = new StringTokenizer(s);
+        Pattern pattern = Pattern.compile("[a-zA-Z0-9]+");
+        Matcher matcher = pattern.matcher(s);
         StringBuilder sb = new StringBuilder();
-        while (st.hasMoreTokens()) {
-            String[] splitString = st.nextToken().toString().split("[^a-zA-Z0-9]");
-            for (String a : splitString) {
-                sb.append(a.toLowerCase());
-            }
+        
+        while (matcher.find()) {
+            sb.append(matcher.group().toLowerCase());
         }
+        
+        System.out.println(sb.toString());
         
         String newString = sb.toString();
         int lastIndex = newString.length() - 1;
