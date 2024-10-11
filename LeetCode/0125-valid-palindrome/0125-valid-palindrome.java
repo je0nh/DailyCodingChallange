@@ -7,9 +7,10 @@ class Solution {
         
         int frontIdx = 0;
         int rearIdx = s.length() - 1;
+        char front, rear;
         while (frontIdx < rearIdx) {
-            char front = s.charAt(frontIdx);
-            char rear = s.charAt(rearIdx);
+            front = s.charAt(frontIdx);
+            rear = s.charAt(rearIdx);
 
             if (!checkChar(front)) {
                 frontIdx++;
