@@ -1,16 +1,17 @@
 class Solution {
     public boolean isSubsequence(String s, String t) {
-        char[] sc = s.toCharArray();
+        if (s.length() == 0) {return true;}
 
-        int sIdx = sc.length;
-        int idx = 0;
-        for (char tc : t.toCharArray()) {
-            if (idx == sIdx) {return true;}
-            if (sc[idx] == tc) {
-                idx++;
+        int sIndex = 0;
+        int tIndex = 0;
+        while (sIndex < s.length() && tIndex < t.length()) {
+            if (s.charAt(sIndex) == t.charAt(tIndex++)) {
+                sIndex++;
             }
         }
+        
+        if (sIndex == s.length()) {return true;}
 
-        return idx == sIdx;
+        return false;
     }
 }
