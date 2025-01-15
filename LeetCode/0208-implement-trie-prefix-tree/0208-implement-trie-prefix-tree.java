@@ -1,13 +1,13 @@
 public class TrieNode {
-    private HashMap<Character, TrieNode> children;
+    private TrieNode[] children;
     private boolean isEnd;
 
     public TrieNode() {
-        this.children = new HashMap<>();
+        this.children = new TrieNode[26];
         this.isEnd = false;
     }
 
-    public HashMap<Character, TrieNode> getChildren() {
+    public TrieNode[] getChildren() {
         return children;
     }
 
@@ -15,7 +15,7 @@ public class TrieNode {
         return isEnd;
     }
 
-    public void setChildren(HashMap<Character, TrieNode> children) {
+    public void setChildren(TrieNode[] children) {
         this.children = children;
     }
 
@@ -34,8 +34,11 @@ class Trie {
     public void insert(String word) {
         TrieNode trieNode = root;
         for (char c : word.toCharArray()) {
-            trieNode.getChildren().putIfAbsent(c, new TrieNode());
-            trieNode = trieNode.getChildren().get(c);
+            int index = c - 'a';
+            if (trieNode.getChildren()[index] == null) {
+                trieNode.getChildren()[index] = new TrieNode();
+            }
+            trieNode = trieNode.getChildren()[index];
         }
 
         // 마지막 단어 표시
@@ -45,9 +48,10 @@ class Trie {
     public boolean search(String word) {
         TrieNode trieNode = root;
         for (char c : word.toCharArray()) {
-            if (!trieNode.getChildren().containsKey(c)) return false;
+            int index = c - 'a';
+            if (trieNode.getChildren()[index] == null) return false;
 
-            trieNode = trieNode.getChildren().get(c);
+            trieNode = trieNode.getChildren()[index];
         }
         return trieNode.getIsEnd();
     }
@@ -55,9 +59,10 @@ class Trie {
     public boolean startsWith(String prefix) {
         TrieNode trieNode = root;
         for (char c : prefix.toCharArray()) {
-            if (!trieNode.getChildren().containsKey(c)) return false;
+            int index = c - 'a';
+            if (trieNode.getChildren()[index] == null) return false;
 
-            trieNode = trieNode.getChildren().get(c);
+            trieNode = trieNode.getChildren()[index];
         }
         return true;
     }
