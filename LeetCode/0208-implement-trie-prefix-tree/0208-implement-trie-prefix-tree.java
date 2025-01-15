@@ -1,31 +1,65 @@
+public class TrieNode {
+    private HashMap<Character, TrieNode> children;
+    private boolean isEnd;
+
+    public TrieNode() {
+        this.children = new HashMap<>();
+        this.isEnd = false;
+    }
+
+    public HashMap<Character, TrieNode> getChildren() {
+        return children;
+    }
+
+    public boolean getIsEnd() {
+        return isEnd;
+    }
+
+    public void setChildren(HashMap<Character, TrieNode> children) {
+        this.children = children;
+    }
+
+    public void setIsEnd(boolean isEnd) {
+        this.isEnd = isEnd;
+    }
+}
+
 class Trie {
-    private Set<String> starts = new HashSet<>();
-    private Set<String> trie = new HashSet<>();
+    private TrieNode root;
 
     public Trie() {
-        
+        this.root = new TrieNode();
     }
     
     public void insert(String word) {
-        trie.add(word);
-        addStart(word);
+        TrieNode trieNode = root;
+        for (char c : word.toCharArray()) {
+            trieNode.getChildren().putIfAbsent(c, new TrieNode());
+            trieNode = trieNode.getChildren().get(c);
+        }
+
+        // 마지막 단어 표시
+        trieNode.setIsEnd(true);
     }
     
     public boolean search(String word) {
-        if (trie.contains(word)) return true;
-        return false;
+        TrieNode trieNode = root;
+        for (char c : word.toCharArray()) {
+            if (!trieNode.getChildren().containsKey(c)) return false;
+
+            trieNode = trieNode.getChildren().get(c);
+        }
+        return trieNode.getIsEnd();
     }
     
     public boolean startsWith(String prefix) {
-        if (starts.contains(prefix)) return true;
-        return false;
-    }
+        TrieNode trieNode = root;
+        for (char c : prefix.toCharArray()) {
+            if (!trieNode.getChildren().containsKey(c)) return false;
 
-    private void addStart(String word) {
-        for (int i = 0; i < word.length(); i++) {
-            String pattern = word.substring(0, i + 1);
-            starts.add(pattern);
+            trieNode = trieNode.getChildren().get(c);
         }
+        return true;
     }
 }
 
