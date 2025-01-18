@@ -14,7 +14,7 @@ class Solution {
             int num = combination.get(combination.size() - 1);
 
             if (combination.size() == k) {
-                ans.add(new ArrayList<>(combination));
+                ans.add(combination);
                 continue;
             }
 
