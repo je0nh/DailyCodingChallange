@@ -10,7 +10,7 @@ class Solution {
         }
 
         while (!q.isEmpty()) {
-            List<Integer> combination = new ArrayList<>(q.poll());
+            List<Integer> combination = q.poll();
             int num = combination.get(combination.size() - 1);
 
             if (combination.size() == k) {
