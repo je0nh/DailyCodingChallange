@@ -8,7 +8,6 @@ class Solution {
             tmp.add(i);
             q.add(tmp);
         }
-        
 
         while (!q.isEmpty()) {
             List<Integer> combination = new ArrayList<>(q.poll());
