@@ -9,7 +9,7 @@
 class Solution {
     private List<List<Integer>> ans = new ArrayList<>();
 
-    public List<List<Integer>> permute(int[] nums) {
+    public List<List<Integer>> permute(int[] nums) {    
         boolean[] visited = new boolean[nums.length];
         List<Integer> tmp = new ArrayList<>();
         dfs(nums, tmp, visited);
@@ -18,20 +18,23 @@ class Solution {
 
     public void dfs(int[] nums, List<Integer> tmp, boolean[] visited) {
         if (tmp.size() == nums.length) {
-            ans.add(new ArrayList<>(tmp));
+            List<Integer> copy = new ArrayList<>(tmp);
+            ans.add(copy);
             return;
         }
 
         for (int i = 0; i < nums.length; i++) {
-            if (visited[i]) continue;
+            if (visited[i]) {
+                continue;
+            }
 
-            tmp.add(nums[i]);
             visited[i] = true;
+            tmp.add(nums[i]);
 
             dfs(nums, tmp, visited);
 
-            tmp.remove(tmp.size() - 1);
             visited[i] = false;
+            tmp.remove(tmp.size() - 1);
         }
     }
 }
