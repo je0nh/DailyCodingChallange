@@ -1,30 +1,27 @@
-import java.util.*;
-
 class Solution {
     public String convert(String s, int numRows) {
-        if (numRows == 1) {return s;}
+        if (numRows == 1) return s;
 
-        StringBuilder[] rows = new StringBuilder[numRows];
+        String[] rows = new String[numRows];
         for (int i = 0; i < numRows; i++) {
-            rows[i] = new StringBuilder();
+            rows[i] = "";
         }
 
-        int currentRow = 0;
-        boolean down = false;
-        
+        int row = 0;
+        int sign = -1;
         for (int i = 0; i < s.length(); i++) {
-            rows[currentRow].append(s.charAt(i));
-            if (currentRow == 0 || currentRow == numRows - 1) {
-                down = !down;
+            rows[row] += s.charAt(i);
+            if (row == 0 || row == numRows - 1) {
+                sign *= -1;
             }
-            currentRow += down? 1 : -1;
+            row += sign;
         }
 
-        StringBuilder answer = new StringBuilder();
-        for (int i = 0; i < numRows; i++) {
-            answer.append(rows[i]);
+        String ans = "";
+        for (String r : rows) {
+            ans += r;
         }
-
-        return answer.toString();
+        return ans;
+        // PAYPAL ISHIRI NG
     }
 }
