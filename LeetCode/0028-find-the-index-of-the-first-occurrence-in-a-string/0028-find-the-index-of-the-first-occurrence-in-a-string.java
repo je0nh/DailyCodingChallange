@@ -1,22 +1,17 @@
 class Solution {
     public int strStr(String haystack, String needle) {
-        if (haystack.length() < needle.length()) {return -1;}
+        int n = haystack.length();
 
-        for (int i = 0; i < haystack.length(); i++) {
-            int n = i + needle.length();
-            String haystackSubstring;
-            
-            try {
-                haystackSubstring = haystack.substring(i, i + needle.length());
-            } catch (Exception e) {
-                haystackSubstring = haystack.substring(i, haystack.length());
+        int idx = 0;
+        int needleLength = needle.length();
+        while (idx <= n - needleLength) {
+            String s = haystack.substring(idx, idx + needleLength);
+            // System.out.println(s);
+            if (s.equals(needle)) {
+                return idx;
             }
-
-            if (haystackSubstring.equals(needle)) {
-                return i;
-            }
+            idx++;
         }
-
         return -1;
     }
 }
