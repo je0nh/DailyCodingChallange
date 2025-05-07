@@ -1,5 +1,4 @@
 import java.util.*;
-import java.util.regex.*;
 
 class Solution {
     public boolean isPalindrome(String s) {
