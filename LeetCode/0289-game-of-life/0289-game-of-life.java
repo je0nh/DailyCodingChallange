@@ -1,37 +1,49 @@
 class Solution {
+    private int n;
+    private int m;
+
     public void gameOfLife(int[][] board) {
-        int m = board[0].length;
-        int n = board.length;
+        this.n = board.length;
+        this.m = board[0].length;
 
-        List<Integer> sumList = new ArrayList<>();
         for (int i = 0; i < n; i++) {
-            for(int j = 0; j < m; j++) {
-                int sum = 0;
-                int tl = (i > 0 && j > 0) ? board[i - 1][j - 1] : 0;
-                int t = (i > 0) ? board[i - 1][j] : 0;
-                int tr = (i > 0 && j < m - 1) ? board[i - 1][j + 1] : 0;
-                int l = (j > 0) ? board[i][j - 1] : 0;
-                int r = (j < m - 1) ? board[i][j + 1] : 0;
-                int bl = (i < n - 1 && j > 0) ? board[i + 1][j - 1] : 0;
-                int b = (i < n - 1) ? board[i + 1][j] : 0;
-                int br = (i < n - 1 && j < m - 1) ? board[i + 1][j + 1] : 0;
+            for (int j = 0; j < m; j++) {
+                int b = board[i][j];
+                int count = checkCell(board, i, j);
 
-                sum += tl + t + tr + l + r + bl + b + br;
-                sumList.add(sum);
-            }
-        }
-
-        // System.out.println(sumList.toString());
-        int idx = 0;
-        for (int i = 0; i < n; i++) {
-            for(int j = 0; j < m; j++) {
-                if (sumList.get(idx) < 2 || sumList.get(idx) > 3) {
-                    board[i][j] = 0;
-                } else if (sumList.get(idx) == 3) {
-                    board[i][j] = 1;
+                if (b == 1 && (count < 2 || count > 3)) {
+                    board[i][j] = -1;
+                } else if(b == 0 && count == 3) {
+                    board[i][j] = 2;
                 }
-                idx++;
             }
         }
+
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (board[i][j] == -1) board[i][j] = 0;
+                if (board[i][j] == 2) board[i][j] = 1;
+            }
+        }
+    }
+
+    private int checkCell(int[][] board, int r, int c) {
+        int count = 0;
+
+        int[][] maps = {
+            {-1, -1}, {-1, 0}, {-1, 1},
+            {0, -1}, {0, 1},
+            {1, -1}, {1, 0}, {1, 1}
+        };
+
+        for (int[] map : maps) {
+            int row = r + map[0];
+            int col = c + map[1];
+
+            if (row >= 0 && row < n && col < m && col >= 0) {
+                if (Math.abs(board[row][col]) == 1) count++;
+            }
+        }
+        return count;
     }
 }
