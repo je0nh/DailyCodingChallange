@@ -1,16 +1,26 @@
 class Solution {
     public boolean isHappy(int n) {
-        HashSet<Integer> set = new HashSet<>();
+        List<Integer> map = new ArrayList<>();
 
-        while (n != 1 && !set.contains(n)) {
-            set.add(n);
+        while (true) {
             int sum = 0;
-            while (n != 0) {
-                sum += (n % 10) * (n % 10);
-                n = n / 10;
+            while (n > 0) {
+                int num = n % 10;
+                sum += num * num;
+                n /= 10;
             }
+            
+            // System.out.println(sum);
+
+            if (map.contains(sum)) {
+                return false;
+            }
+
+            if (sum == 1) {
+                return true;
+            }
+            map.add(sum);
             n = sum;
         }
-        return n == 1;
     }
 }
