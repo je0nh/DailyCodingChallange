@@ -1,32 +1,26 @@
 class Solution {
     public int[][] merge(int[][] intervals) {
-        Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0]));
-        List<int[]> tmpArr = new ArrayList<>();
+        Arrays.sort(intervals, (prev, next) -> Integer.compare(prev[0], next[0]));
 
-        for (int i = 0; i < intervals.length;) {
-            int[] tmp = new int[2];
-            tmp[0] = intervals[i][0];
-            tmp[1] = intervals[i][1];
-
-            int seq = 1;
-            while (i + seq < intervals.length && tmp[1] >= intervals[i + seq][0]) {
-                if (tmp[1] < intervals[i + seq][1]) {
-                    tmp[1] = intervals[i + seq][1];
-                }
-                seq++;
+        List<int[]> tmp = new ArrayList<>();
+        int idx = 0;
+        while (idx < intervals.length) {
+            int[] interval = intervals[idx];
+            
+            while (idx < intervals.length - 1 && interval[1] >= intervals[idx + 1][0]) {
+                // System.out.println(intervals[idx + 1][1]);
+                interval[1] = intervals[idx + 1][1] > interval[1] ? intervals[idx + 1][1] : interval[1];
+                idx++;
             }
 
-            // System.out.println(tmp[0] + ", " + tmp[1]);
-            // System.out.println(i);
-            tmpArr.add(tmp);
-            i += seq;
+            tmp.add(interval);
+            idx++;
         }
 
-        int[][] answer = new int[tmpArr.size()][2];
-        for (int i = 0; i < tmpArr.size(); i++) {
-            answer[i] = tmpArr.get(i);
+        int[][] ans = new int[tmp.size()][2];
+        for (int i = 0; i < tmp.size(); i++) {
+            ans[i] = tmp.get(i);
         }
-        // System.out.println(answer.toString());
-        return answer;
+        return ans;
     }
 }
