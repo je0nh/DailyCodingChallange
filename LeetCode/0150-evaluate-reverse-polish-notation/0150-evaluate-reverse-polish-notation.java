@@ -1,26 +1,35 @@
 class Solution {
+    private String[] operators = new String[]{"+", "-", "*", "/"};
+
     public int evalRPN(String[] tokens) {
         Stack<Integer> stack = new Stack<>();
         for (int i = 0; i < tokens.length; i++) {
-            if (tokens[i].equals("+")) {
-                int b = stack.pop();
-                int a = stack.pop();
-                stack.push(a + b);
-            } else if (tokens[i].equals("-")) {
-                int b = stack.pop();
-                int a = stack.pop();
-                stack.push(a - b);
-            } else if (tokens[i].equals("*")) {
-                int b = stack.pop();
-                int a = stack.pop();
-                stack.push(a * b);
-            } else if (tokens[i].equals("/")) {
-                int b = stack.pop();
-                int a = stack.pop();
-                stack.push(a / b);
+            String token = tokens[i];
+
+            int num = 0;
+            int left = 0;
+            int right = 0;
+            if (token.equals("+")) {
+                right = stack.pop();
+                left = stack.pop();
+                num = left + right;
+            } else if (token.equals("-")) {
+                right = stack.pop();
+                left = stack.pop();
+                num = left - right;
+            } else if (token.equals("*")) {
+                right = stack.pop();
+                left = stack.pop();
+                num = left * right;
+            } else if (token.equals("/")) {
+                right = stack.pop();
+                left = stack.pop();
+                num = left / right;
             } else {
-                stack.push(Integer.parseInt(tokens[i]));
+                num = Integer.parseInt(token);
             }
+            // System.out.println(num);
+            stack.add(num);
         }
         return stack.pop();
     }
