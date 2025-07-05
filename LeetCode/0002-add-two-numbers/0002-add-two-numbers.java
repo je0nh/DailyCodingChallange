@@ -10,30 +10,29 @@
  */
 class Solution {
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
-        int currentVal = l1.val + l2.val;
-        ListNode answer = new ListNode(currentVal % 10);
-        int roundUp = currentVal / 10;
+        ListNode ans = new ListNode();
+        ListNode dummy = ans;
+        int carry = 0;
 
-        ListNode l1NextNode = l1.next;
-        ListNode l2NextNode = l2.next;
-        ListNode ansNext = answer;
-        while (l1NextNode != null || l2NextNode != null || roundUp != 0) {
-            int l1val = (l1NextNode != null) ? l1NextNode.val : 0;
-            int l2val = (l2NextNode != null) ? l2NextNode.val : 0;
+        while (l1 != null || l2 != null) {
+            int num1 = (l1 != null) ? l1.val : 0;
+            int num2 = (l2 != null) ? l2.val : 0;
+            int sum = num1 + num2 + carry;
 
-            int sum = l1val + l2val + roundUp;
-            roundUp = sum / 10;
-            ansNext.next = new ListNode(sum % 10);
-            ansNext = ansNext.next;
-            // System.out.println(sum % 10);
+            carry = sum / 10;
+            ListNode tmp = new ListNode();
+            tmp.val = sum % 10;
 
-            l1NextNode = (l1NextNode != null) ? l1NextNode.next : null;
-            l2NextNode = (l2NextNode != null) ? l2NextNode.next : null;
+            dummy.next = tmp;
+            dummy = dummy.next;
+
+            if (l1 != null) l1 = l1.next;
+            if (l2 != null) l2 = l2.next;
         }
 
-        // int l1Value = l1.val;
-        // System.out.println(l1Value);
-
-        return answer;
+        if (carry != 0) dummy.next = new ListNode(carry);
+        if (l1 != null) dummy.next = l1;
+        if (l2 != null) dummy.next = l2;
+        return ans.next;
     }
 }
