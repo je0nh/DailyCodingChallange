@@ -10,22 +10,26 @@
  */
 class Solution {
     public ListNode removeNthFromEnd(ListNode head, int n) {
-        ArrayList<ListNode> array = new ArrayList<>();
+        if (head.next == null) return null;
+
+        Map<Integer, ListNode> map = new HashMap<>();
+        int idx = 0;
         while (head != null) {
-            array.add(head);
+            map.put(idx, new ListNode(head.val));
+            // {0: node(1), 1: node(2) .. }
             head = head.next;
+            idx++;
         }
 
-        ListNode answer = new ListNode(0);
-        ListNode dummy = answer;
-        for (int i = 0; i < array.size(); i++) {
-            if (i == array.size() - n) continue;
-            dummy.next = array.get(i);
+        int remove = idx - n;
+        ListNode ans = new ListNode(0);
+        ListNode dummy = ans;
+        for (int i = 0; i < idx; i++) {
+            if (i == remove) continue;
+
+            dummy.next = map.get(i);
             dummy = dummy.next;
         }
-
-        dummy.next = null;
-
-        return answer.next;
+        return ans.next;
     }
 }
