@@ -20,25 +20,16 @@ class Solution {
         Stack<TreeNode> stack = new Stack<>();
         stack.push(root);
 
-        TreeNode prev = null;
-
         while (!stack.isEmpty()) {
-            TreeNode current = stack.pop();
+            TreeNode curr = stack.pop();
 
-            if (prev != null) {
-                prev.left = null;
-                prev.right = current;
+            if (curr.right != null) stack.push(curr.right);
+            if (curr.left != null) stack.push(curr.left);
+
+            if (!stack.isEmpty()) {
+                curr.right = stack.peek();
             }
-
-            if (current.right != null) {
-                stack.add(current.right);
-            }
-
-            if (current.left != null) {
-                stack.add(current.left);
-            }
-
-            prev = current;
+            curr.left = null;
         }
     }
 }
