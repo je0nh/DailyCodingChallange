@@ -15,33 +15,29 @@
  */
 class Solution {
     public int sumNumbers(TreeNode root) {
-        if (root == null) return 0;
-        
-        Queue<TreeNode> q = new LinkedList<>();
-        Queue<Integer> val = new LinkedList<>();
-        q.offer(root);
-        val.offer(root.val);
+        Stack<Pair<TreeNode, Integer>> stack = new Stack<>();
+        Pair<TreeNode, Integer> pair = new Pair<>(root, root.val);
+        stack.add(pair);
 
-        int answer = 0;
-        while (!q.isEmpty()) {
-            TreeNode treeNode = q.poll();
-            int v = val.poll();
+        int ans = 0;
+        while (!stack.isEmpty()) {
+            Pair<TreeNode, Integer> currNode = stack.pop();
+            TreeNode node = currNode.getKey();
+            int val = currNode.getValue();
 
-            if (treeNode.left == null && treeNode.right == null) {
-                answer += v;
+            if (node.right == null && node.left == null) {
+                ans += val;
             }
 
-            if (treeNode.left != null) {
-                q.offer(treeNode.left);
-                val.offer(v * 10 + treeNode.left.val);
+            if (node.left != null) {
+                Pair<TreeNode, Integer> leftNode = new Pair<>(node.left, (val * 10) + node.left.val);
+                stack.add(leftNode);
             }
-
-            if (treeNode.right != null) {
-                q.offer(treeNode.right);
-                val.offer(v * 10 + treeNode.right.val);
+            if (node.right != null) {
+                Pair<TreeNode, Integer> rightNode = new Pair<>(node.right, (val * 10) + node.right.val);
+                stack.add(rightNode);
             }
         }
-
-        return answer;
+        return ans;
     }
 }
