@@ -14,27 +14,32 @@
  * }
  */
 class BSTIterator {
-    private Stack<TreeNode> stack = new Stack<>();
+    private List<Integer> values = new ArrayList<>();
+    private int idx = 0;
 
     public BSTIterator(TreeNode root) {
-        helper(root);
-    }
+        Stack<TreeNode> stack = new Stack<>();
+        TreeNode curr = root;
 
-    private void helper(TreeNode node) {
-        while (node != null) {
-            stack.push(node);
-            node = node.left;
+        while (curr != null || !stack.isEmpty()) {
+            while (curr != null) {
+                stack.push(curr);
+                curr = curr.left;
+            }
+
+            curr = stack.pop();
+            this.values.add(curr.val);
+
+            curr = curr.right;
         }
     }
     
     public int next() {
-        TreeNode node = stack.pop();
-        helper(node.right);
-        return node.val;
+        return values.get(idx++);
     }
     
     public boolean hasNext() {
-        return !stack.isEmpty();
+        return idx != values.size();
     }
 }
 
