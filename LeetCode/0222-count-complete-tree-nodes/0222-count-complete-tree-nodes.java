@@ -15,8 +15,18 @@
  */
 class Solution {
     public int countNodes(TreeNode root) {
-        if (root == null) return 0;
+        int ans = 0;
+        if (root == null) return ans;
+        
+        Queue<TreeNode> q = new LinkedList<>();
+        q.add(root);
+        while (!q.isEmpty()) {
+            TreeNode node = q.poll();
+            ans++;
 
-        return 1 + countNodes(root.left) + countNodes(root.right);
+            if (node.left != null) q.add(node.left);
+            if (node.right != null) q.add(node.right);
+        }
+        return ans;
     }
 }
