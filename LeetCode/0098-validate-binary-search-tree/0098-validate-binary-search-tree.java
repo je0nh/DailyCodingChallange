@@ -22,11 +22,10 @@ class Solution {
 
     private boolean inorder(TreeNode tree) {
         if (tree == null) return true;
-        
-        if (!inorder(tree.left)) return false;
-        
-        if (prev != null && tree.val <= prev) return false;
 
+        if (!inorder(tree.left)) return false;
+
+        if (prev != null && prev >= tree.val) return false;
         prev = tree.val;
 
         return inorder(tree.right);
