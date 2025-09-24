@@ -36,6 +36,7 @@ class Solution {
         ArrayList<Node> neigh = new ArrayList<>();
         for (Node n : node.neighbors) {
             if (visited.containsKey(n)) {
+                // 만약 이미 노드에 방문하게 되면 dfs를 호출하지 않기 때문에 재귀에서 빠져나올 수 있음
                 neigh.add(visited.get(n));
             } else {
                 Node cloneNeigh = new Node();
