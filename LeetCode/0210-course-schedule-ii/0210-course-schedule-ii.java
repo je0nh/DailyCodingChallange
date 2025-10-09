@@ -1,47 +1,45 @@
 class Solution {
     private Map<Integer, List<Integer>> graph = new HashMap<>();
-    private List<Integer> result = new ArrayList<>();
 
     public int[] findOrder(int numCourses, int[][] prerequisites) {
-        for (int[] prerequisite : prerequisites) {
-            createGraph(prerequisite);
-        }
-
-        int[] visited = new int[numCourses];
-        for (int i = 0; i < numCourses; i ++) {
-            if (!checkCourse(i, visited)) return new int[0];
-        }
-        
-        int[] ans = new int[numCourses];
         for (int i = 0; i < numCourses; i++) {
-            ans[i] = result.get(numCourses - 1 - i);
+            graph.put(i, new ArrayList<>());
         }
-        return ans;
-    }
 
-    private void createGraph(int[] prerequisite) {
-        Integer prev = prerequisite[1];
-        Integer next = prerequisite[0];
+        int[] inDegree = new int[numCourses];
+        for (int[] prerequisite : prerequisites) {
+            int course = prerequisite[0];
+            int pre = prerequisite[1];
 
-        graph.putIfAbsent(prev, new ArrayList<>());
+            graph.get(pre).add(course);
+            inDegree[course]++;
+        }
 
-        graph.get(prev).add(next);
-    }
-
-    private boolean checkCourse(int course, int[] visited) {
-        if (visited[course] == 2) return true;
-        if (visited[course] == 1) return false;
-
-        visited[course] = 1;
-        List<Integer> nextCourse = graph.get(course);
-        if (nextCourse != null) {
-            for (Integer next : nextCourse) {
-                if (!checkCourse(next, visited)) return false;
+        Queue<Integer> q = new LinkedList<>();
+        for (int i = 0; i < numCourses; i++) {
+            if (inDegree[i] == 0) {
+                q.add(i);
             }
         }
-        visited[course] = 2;
 
-        result.add(course);
-        return true;
+        int[] ans = new int[numCourses];
+        int idx = 0;
+        while (!q.isEmpty()) {
+            int current = q.poll();
+            ans[idx++] = current;
+
+            for (int next : graph.get(current)) {
+                inDegree[next]--;
+                if (inDegree[next] == 0) {
+                    q.add(next);
+                }
+            }
+        }
+        
+        if (idx == numCourses) {
+            return ans;
+        } else {
+            return new int[0];
+        }
     }
 }
