@@ -1,53 +1,42 @@
 class Solution {
     public int snakesAndLadders(int[][] board) {
-        List<Integer> convert = boardHelper(board);
-        // System.out.println(convert.toString());
-        int idx = convert.size();
+        List<Integer> arr = new ArrayList<>();
+        int n = board.length;
+        boolean leftToRight = true;
 
-        boolean[] visited = new boolean[convert.size()];
+        for (int i = n - 1; i >= 0; i--) {
+            if (leftToRight) {
+                for (int j = 0; j < n; j++) arr.add(board[i][j]);
+            } else {
+                for (int j = n - 1; j >= 0; j--) arr.add(board[i][j]);
+            }
+            leftToRight = !leftToRight;
+        }
+
         Queue<int[]> q = new LinkedList<>();
-        // int[] -> {현재 위치, 던진 횟수}
-        q.add(new int[]{0, 0});
-        visited[0] = true;
+        q.add(new int[]{1, 0});
+        boolean[] visited = new boolean[n * n + 1];
+        visited[1] = true;
+        while (!q.isEmpty()) {
+            int[] now = q.poll();
+            int curr = now[0];
+            int rolls = now[1];
 
-        while (!q.isEmpty()){
-            int[] tmp = q.poll();
-            int current = tmp[0];
-            int roll = tmp[1];
+            if (curr == n * n) return rolls;
 
             for (int dice = 1; dice <= 6; dice++) {
-                int nextIdx = current + dice;
+                int next = curr + dice;
+                if (next > n * n) break;
 
-                if (nextIdx >= idx) break;
+                int move = arr.get(next - 1);
+                if (move != -1) next = move;
 
-                int destination = (convert.get(nextIdx) == -1) ? nextIdx : convert.get(nextIdx) - 1;
-
-                if (destination == idx - 1) {
-                    return roll + 1;
-                }
-
-                if (!visited[destination]) {
-                    visited[destination] = true;
-                    q.add(new int[]{destination, roll + 1});
+                if (!visited[next]) {
+                    visited[next] = true;
+                    q.add(new int[]{next, rolls + 1});
                 }
             }
         }
         return -1;
-    }
-
-    private List<Integer> boardHelper(int[][] ori) {
-        int n = ori.length;
-        List<Integer> board = new ArrayList<>();
-        int count = 0;
-        for (int i = n - 1; i >= 0; i--) {
-            int[] line = ori[i];
-            if (count % 2 == 0) {
-                for (int j = 0; j < line.length; j++) board.add(line[j]);
-            } else {
-                for (int j = line.length - 1; j >= 0; j--) board.add(line[j]);
-            }
-            count++;
-        }
-        return board;
     }
 }
