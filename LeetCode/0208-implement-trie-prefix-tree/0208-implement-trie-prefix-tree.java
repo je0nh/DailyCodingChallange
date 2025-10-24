@@ -1,4 +1,4 @@
-public class TrieNode {
+private class TrieNode {
     TrieNode[] trie = new TrieNode[26];
     boolean isEndOfWord = false;
 }
