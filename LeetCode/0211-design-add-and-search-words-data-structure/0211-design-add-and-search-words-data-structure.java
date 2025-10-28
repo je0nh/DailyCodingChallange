@@ -1,82 +1,56 @@
-class Trie {
-    private Trie[] node;
-    private boolean isEnd;
-
-    public Trie() {
-        this.node = new Trie[26];
-        this.isEnd = false;
-    }
-
-    public Trie[] getNode() {
-        return node;
-    }
-
-    public boolean getIsEnd() {
-        return isEnd;
-    }
-
-    public void setNode(Trie[] node) {
-        this.node = node;
-    }
-
-    public void setIsEnd(boolean isEnd) {
-        this.isEnd = isEnd;
-    }
+public class TrieNode {
+    TrieNode[] trie = new TrieNode[26];
+    boolean end = false;
 }
 
 class WordDictionary {
-    private Trie root;
-    private Set<Integer> check = new HashSet<>();
+    private TrieNode root = new TrieNode();
 
     public WordDictionary() {
-        this.root = new Trie();
+        
     }
     
     public void addWord(String word) {
-        Trie node = root;
-        for (char c : word.toCharArray()) {
-            int idx = c - 'a';
-            if (node.getNode()[idx] == null) {
-                node.getNode()[idx] = new Trie();
-                check.add(idx);
+        TrieNode node = root;
+        for (int i = 0; i < word.length(); i++) {
+            int c = word.charAt(i) - 'a';
+            if (node.trie[c] == null) {
+                node.trie[c] = new TrieNode();
             }
-            node = node.getNode()[idx];
+            node = node.trie[c];
         }
-
-        // 마지막 글자 표시
-        node.setIsEnd(true);
+        node.end = true;
     }
     
     public boolean search(String word) {
-        Queue<Pair<Trie, Integer>> q = new LinkedList<>();
-        q.add(new Pair<>(root, 0));
+        Queue<TrieNode> q = new LinkedList<>();
+        q.add(root);
 
-        while (!q.isEmpty()) {
-            Pair<Trie, Integer> current = q.poll();
-            Trie node = current.getKey();
-            Integer idx = current.getValue();
+        for (int i = 0; i < word.length(); i++) {
+            char c = word.charAt(i);
+            int size = q.size();
 
-            if (idx == word.length()) {
-                if (node.getIsEnd()) return true;
-                continue;
-            }
+            Queue<TrieNode> nextLevel = new LinkedList<>();
 
-            char c = word.charAt(idx);
-            if (c == '.') {
-                for (Trie trie : node.getNode()) {
-                    if (trie != null) {
-                        q.add(new Pair<>(trie, idx + 1));
+            while (size-- > 0) {
+                TrieNode node = q.poll();
+                if (node == null) continue;
+
+                if (c == '.') {
+                    for (TrieNode child : node.trie) {
+                        if (child != null) nextLevel.add(child);
                     }
-                }
-            } else {
-                int charToInt = c - 'a';
-                Trie trie = node.getNode()[charToInt];
-                if (trie != null) {
-                    q.add(new Pair<>(trie, idx + 1));
+                } else {
+                    TrieNode next = node.trie[c - 'a'];
+                    if (next != null) nextLevel.add(next);
                 }
             }
+            q = nextLevel;
         }
 
+        for (TrieNode node : q) {
+            if (node.end) return true;
+        }
         return false;
     }
 }
